@@ -6,14 +6,12 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:00:56 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/09/17 16:18:32 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/02 17:12:36 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONTACT_HPP
 # define CONTACT_HPP  
-
-# include "header.hpp"
 
 class Contact
 {

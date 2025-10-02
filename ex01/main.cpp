@@ -6,11 +6,13 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:01:00 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/09/17 16:43:35 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/02 17:11:20 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.hpp"
+#include <iostream>
+#include "PhoneBook.hpp"
+#include "Contact.hpp" 
 
 void    display_promt(void)
 {
