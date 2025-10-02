@@ -1,6 +1,6 @@
-CC = g++
+CC = c++
 
-CFLAGS = -Wall -Wextra -Werror -g 
+CFLAGS = -Wall -Wextra -Werror -g
 
 SRC = main.cpp
 
@@ -15,8 +15,8 @@ all : $(NAME)
 $(NAME) : $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@
 
-$(OBJ) : $(SRC) $(HDR)
-	$(CC) $(CFLAGS) -c $< -o $@
+# $(OBJ) : $(SRC) $(HDR)
+# 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean :
 	rm -rf $(OBJ)
