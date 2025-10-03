@@ -6,7 +6,7 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:01:00 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/10/02 17:11:20 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:01:12 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,34 +16,31 @@
 
 void    display_promt(void)
 {
-    std::cout << "\n=======================================";
-    std::cout << "=======================\n\n" << std::flush;
-    std::cout << "$>" << std::flush;
+    std::cout << "\n\n=======================\n\n";
+    std::cout << "$> ";
 }
+
 int main(void)
 {
     PhoneBook   phoneBook;
-    std::string command;
-
-    while ('X')
+    std::string request;
+    
+    std::cout.setf(std::ios::unitbuf);
+    while (true)
     {
         display_promt();
-        std::cin >> command;
-        if (!command.compare("ADD"))
+        std::getline(std::cin, request);
+        if (std::cin.eof())
         {
-            std::cout << command << std::endl;
+            std::cout << "EOF\n";
+            break;
+        }
+        else if (!request.compare("ADD"))
             phoneBook.add();
-        }
-        else if (!command.compare("SEARCH"))
-        {
-            std::cout << command << std::endl;
+        else if (!request.compare("SEARCH"))
             phoneBook.search();
-        }
-        else if (!command.compare("EXIT"))
-        {
-            std::cout << command << std::endl;
+        else if (!request.compare("EXIT"))
             phoneBook.Exit();
-        }
     }
     return 0;
 }
