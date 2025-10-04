@@ -6,7 +6,7 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:01:00 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/10/04 14:12:10 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/04 18:00:25 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 
 void    display_promt(std::string &request)
 {
-    // std::cout << "\n\n=======================\n\n";
-    std::cout << "\n$> ";
+    std::cout << "$> ";
     std::getline(std::cin, request);
 }
 
