@@ -1,10 +1,6 @@
-CC = g++
+CC = c++
 
 CFLAGS = -Wall -Wextra -Werror -std=c++98 -g\
-		# -I/usr/include/c++/11\
-		# -I/usr/include/c++/10\
-		# -I/usr/include/x86_64-linux-gnu/c++/11\
-
 
 SRC = main.cpp PhoneBook.cpp
 

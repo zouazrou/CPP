@@ -6,13 +6,13 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 09:40:17 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/10/04 16:26:09 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/04 18:09:54 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PhoneBook.hpp"
 
-void    padding(size_t size)
+static void    padding(size_t size)
 {
     int padding_len;
     
@@ -21,7 +21,7 @@ void    padding(size_t size)
         std::cout << ' ';
 }
 
-void    print_column(std::string str)
+static void    print_column(std::string str)
 {
     if (str.length() <= COL_WIDE)
     {
@@ -33,7 +33,7 @@ void    print_column(std::string str)
     std::cout << "|";
 }
 
-int trim_spaces(std::string &str)
+static int trim_spaces(std::string &str)
 {
     int i;
     int l;
@@ -51,7 +51,7 @@ int trim_spaces(std::string &str)
     return (0);
 }
 
-bool    isPhoneNum(std::string &s)
+static  bool    isDigits(std::string &s)
 {
     for (size_t i = 0; i < s.length(); i++)
     {
@@ -61,86 +61,55 @@ bool    isPhoneNum(std::string &s)
     return (true);
 }
 
+bool isValidContact(Contact &contact)
+{
+    if (trim_spaces(contact.fName)
+        || trim_spaces(contact.lName)
+        || trim_spaces(contact.nickName)
+        || trim_spaces(contact.phoneNum)
+        || trim_spaces(contact.secret))
+    {
+        std::cerr << "IS EMPTY FIELD !\n";
+        return (false);
+    }
+    if (isDigits(contact.phoneNum) == false)
+    {
+        std::cerr << "Error : IS EMPTY FIELD !\n";
+        return (false);
+    }
+    return (true);
+}
 
 void    PhoneBook::add(void)
 {
-    /****/
-    std::cout << "-->first Name:" << std::endl;
+    std::cout << "-->first Name: " << std::endl;
     std::getline(std::cin, contact[index].fName);
-    if (trim_spaces(contact[index].fName))
-    {
-        std::cerr << "IS EMPTY FIELD !\n";
-        return ;
-    }
     /****/
     std::cout << "-->Last Name:" << std::endl;
     std::getline(std::cin, contact[index].lName);
-    if (trim_spaces(contact[index].lName))
-    {
-        std::cerr << "IS EMPTY FIELD !\n";
-        return ;
-    }
     /****/
     std::cout << "-->NickName:" << std::endl;
     std::getline(std::cin, contact[index].nickName);
-    if (trim_spaces(contact[index].nickName))
-    {
-        std::cerr << "IS EMPTY FIELD !\n";
-        return ;
-    }
     /****/
     std::cout << "-->Phone Number:" << std::endl;
     std::getline(std::cin, contact[index].phoneNum);
-    if (trim_spaces(contact[index].phoneNum))
-    {
-        std::cerr << "IS EMPTY FIELD !\n";
-        return ;
-    }
-    if (isPhoneNum(contact[index].phoneNum) == false)
-    {
-        std::cerr << "PHONE-NUM MUST HAS ONLY DIGITS !\n";
-        return ;
-    }
     /****/
     std::cout << "-->Your Secret:" << std::endl;
     std::getline(std::cin, contact[index].secret);
-    if (trim_spaces(contact[index].secret))
-    {
-        std::cerr << "IS EMPTY FIELD !\n";
+    if (isValidContact(contact[index]) == false)
         return ;
-    }
     index = (index+1)%MAX_CONTACT;
     
     if (curr_size != MAX_CONTACT)
         curr_size++;
-    std::cout << "next-idx->" << index << " :curr-size->" << curr_size << std::endl;
 }
 
-#include <unistd.h>
 
-// void    PhoneBook::display_contact_table(void)
-// {
-//     std::cout << "\n|  INDEX   |";
-//     std::cout << "first name|";
-//     std::cout << "last name |";
-//     std::cout << " Nickname |";
-//     int i = (index) % curr_size;
-//     int j;
-//     for (j = 0; j < curr_size; j++)
-//     {
-//         std::cout << "\n|__________|__________|__________|__________|\n";
-//         std::cout << "|" << j << "         |";
-//         print_column(contact[i].fName);
-//         print_column(contact[i].lName);
-//         print_column(contact[i].nickName);
-//         i = (i+1) % curr_size;
-//     }
-//     std::cout << "\n|__________|__________|__________|__________|\n";
-// }
-void    PhoneBook::search(void)
+void    PhoneBook::display_contact_table(void)
 {
-    
-    std::cout << "\n|  INDEX   |";
+    std::cout << "\n ___________________________________________\n";
+    std::cout << "|          |          |          |          |\n";
+    std::cout << "|  INDEX   |";
     std::cout << "first name|";
     std::cout << "last name |";
     std::cout << " Nickname |";
@@ -156,18 +125,37 @@ void    PhoneBook::search(void)
         i = (i+1) % curr_size;
     }
     std::cout << "\n|__________|__________|__________|__________|\n";
+}
+
+void    PhoneBook::search(void)
+{
+    std::string str;
+    int         input;
+    
+    if (!curr_size)
+    {
+        std::cerr << "Error : PhoneBook is empty!\n";
+        return ;
+    }
+    display_contact_table();
     std::cout << "ENTRE THE CONTACT INDEX TO DISPLAY IT : ";
-    std::cin >> j;
-    if (!std::cin || j < 0 || j >= curr_size)
+    std::getline(std::cin, str);
+    if (trim_spaces(str) || !isDigits(str))
     {
         std::cerr << "Error : input is not valid\n";
         return ;
     }
-    std::cout << "First Name   : " << contact[(i+j)%curr_size].fName << std::endl;
-    std::cout << "Last Name   : " << contact[(i+j)%curr_size].lName << std::endl;
-    std::cout << "NickName     : " << contact[(i+j)%curr_size].nickName << std::endl;
-    std::cout << "Phone Number : " << contact[(i+j)%curr_size].phoneNum << std::endl;
-    std::cout << "Secret       : " << contact[(i+j)%curr_size].secret << std::endl;
+    input = atoi(str.c_str());
+    if (input < 0 || input >= curr_size)
+    {
+        std::cerr << "Error : input is not valid\n";
+        return ;
+    }
+    std::cout << "First Name   : " << contact[(index+input)%curr_size].fName << std::endl;
+    std::cout << "Last Name    : " << contact[(index+input)%curr_size].lName << std::endl;
+    std::cout << "NickName     : " << contact[(index+input)%curr_size].nickName << std::endl;
+    std::cout << "Phone Number : " << contact[(index+input)%curr_size].phoneNum << std::endl;
+    std::cout << "Secret       : " << contact[(index+input)%curr_size].secret << std::endl;
 }
 
 void    PhoneBook::Exit(void)

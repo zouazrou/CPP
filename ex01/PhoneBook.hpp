@@ -6,7 +6,7 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:01:02 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/10/04 16:22:56 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/04 17:58:01 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <iostream>
 # include <cstdlib>
+# include <stdlib.h>
 # include "Contact.hpp"
 
 # define MAX_CONTACT 3

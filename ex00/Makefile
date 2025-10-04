@@ -1,7 +1,11 @@
 CC = c++
+
 CFLAGS = -Wall -Wextra -Werror -g 
+
 SRC = megaphone.cpp
+
 OBJ = $(SRC:.cpp=.o)
+
 NAME = megaphone
 
 all : $(NAME)
