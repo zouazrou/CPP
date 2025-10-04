@@ -6,7 +6,7 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:01:00 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/10/03 19:01:12 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/04 14:12:10 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #include "PhoneBook.hpp"
 #include "Contact.hpp" 
 
-void    display_promt(void)
+void    display_promt(std::string &request)
 {
-    std::cout << "\n\n=======================\n\n";
-    std::cout << "$> ";
+    // std::cout << "\n\n=======================\n\n";
+    std::cout << "\n$> ";
+    std::getline(std::cin, request);
 }
 
 int main(void)
@@ -28,13 +29,9 @@ int main(void)
     std::cout.setf(std::ios::unitbuf);
     while (true)
     {
-        display_promt();
-        std::getline(std::cin, request);
+        display_promt(request);
         if (std::cin.eof())
-        {
-            std::cout << "EOF\n";
-            break;
-        }
+            break ;
         else if (!request.compare("ADD"))
             phoneBook.add();
         else if (!request.compare("SEARCH"))
@@ -42,5 +39,6 @@ int main(void)
         else if (!request.compare("EXIT"))
             phoneBook.Exit();
     }
+    std::cout << "EOF\n";
     return 0;
 }
