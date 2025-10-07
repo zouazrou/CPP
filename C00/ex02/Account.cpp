@@ -6,7 +6,7 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:44:16 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/10/05 16:51:48 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/06 11:28:46 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,7 @@ bool	Account::makeWithdrawal( int withdrawal )
 
 int		Account::checkAmount( void ) const
 {
-    
-    return (0);
+    return (_amount);
 }
 
 void	Account::displayStatus( void ) const
@@ -135,9 +134,12 @@ void	Account::displayStatus( void ) const
 
 void	Account::_displayTimestamp( void )
 {
-    std::time_t now = std::time(NULL);
-    std::tm *timeInfo = std::localtime(&now);
-    char buffer[20];
-    std::strftime(buffer, 20, "[%Y%m%d_%H%M%S] ", timeInfo);
+    std::time_t now;
+    std::tm     *timeInfo;
+    char        buffer[19];
+    
+    now = std::time(NULL);
+    timeInfo = std::localtime(&now);
+    std::strftime(buffer, 19, "[%Y%m%d_%H%M%S] ", timeInfo);
     std::cout << buffer;
 }
