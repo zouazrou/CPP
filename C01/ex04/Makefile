@@ -6,7 +6,7 @@ SRC = main.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
-NAME = exe
+NAME = sed_is_for_losers
 
 all : $(NAME)
 
