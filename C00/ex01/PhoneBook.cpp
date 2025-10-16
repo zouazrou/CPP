@@ -6,28 +6,16 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 09:40:17 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/10/04 18:09:54 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/16 10:58:05 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PhoneBook.hpp"
 
-static void    padding(size_t size)
-{
-    int padding_len;
-    
-    padding_len = COL_WIDE - size;
-    for (int i = 0; i < padding_len; i++)
-        std::cout << ' ';
-}
-
 static void    print_column(std::string str)
 {
     if (str.length() <= COL_WIDE)
-    {
-        std::cout << str;
-        padding(str.length());
-    }
+        std::cout << std::right << std::setw(10) << str;
     else
         std::cout << str.substr(0, 9) << '.';
     std::cout << "|";
@@ -107,24 +95,25 @@ void    PhoneBook::add(void)
 
 void    PhoneBook::display_contact_table(void)
 {
-    std::cout << "\n ___________________________________________\n";
-    std::cout << "|          |          |          |          |\n";
-    std::cout << "|  INDEX   |";
-    std::cout << "first name|";
-    std::cout << "last name |";
-    std::cout << " Nickname |";
+    std::cout << "+----------+----------+----------+----------+\n";
+    std::cout << "|     Index|"
+              << "First Name|"
+              << " Last Name|"
+              << "  Nickname|"
+              << std::endl;
+    std::cout << "+----------+----------+----------+----------+\n";
     int i = (index) % curr_size;
     int j;
     for (j = 0; j < curr_size; j++)
     {
-        std::cout << "\n|__________|__________|__________|__________|\n";
-        std::cout << "|" << j << "         |";
+        std::cout << std::right << "|" << std::setw(10) << j << '|';
         print_column(contact[i].fName);
         print_column(contact[i].lName);
         print_column(contact[i].nickName);
+        std::cout << std::endl;
         i = (i+1) % curr_size;
     }
-    std::cout << "\n|__________|__________|__________|__________|\n";
+    std::cout << "+----------+----------+----------+----------+\n";
 }
 
 void    PhoneBook::search(void)

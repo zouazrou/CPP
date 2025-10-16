@@ -6,20 +6,20 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 15:01:02 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/10/04 17:58:01 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/16 10:34:59 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHONEBOOK_HPP 
+#ifndef PHONEBOOK_HPP
 # define PHONEBOOK_HPP
 
 # include <iostream>
 # include <cstdlib>
-# include <stdlib.h>
+# include <iomanip>
 # include "Contact.hpp"
 
-# define MAX_CONTACT 3
-# define COL_WIDE 10
+# define MAX_CONTACT    8
+# define COL_WIDE       10
 
 class PhoneBook : public Contact
 {
@@ -38,7 +38,6 @@ class PhoneBook : public Contact
         
     private:
         void    display_contact_table(void);
-
 };
 
 #endif
