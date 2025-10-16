@@ -6,7 +6,7 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 08:51:21 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/09/17 14:59:45 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/15 11:35:06 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,10 @@ int main(int ac, char *av[])
     }
     for (int i = 1; i < ac; i++)
     {
-        for (int j = 0; av[i][j]; j++)
-        {
-            if (islower(av[i][j]))
-                av[i][j] += 'A' - 'a';
-        }
-        std::cout << av[i];
+        std::string word = av[i];
+        for (unsigned int j = 0; j < word.size(); j++)
+            word[j] = toupper(word[j]);
+        std::cout << word;
     }
     std::cout << std::endl;
     return (0);
