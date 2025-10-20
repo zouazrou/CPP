@@ -6,11 +6,12 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 17:09:43 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/10/08 11:07:52 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/19 09:32:46 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
+#include <string>
 
 int main(void)
 {
