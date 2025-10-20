@@ -6,7 +6,7 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 17:10:03 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/10/08 12:25:15 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/19 09:00:46 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define WEAPON_HPP
 
 #include <iostream>
+#include <string>
 
 class Weapon
 {
