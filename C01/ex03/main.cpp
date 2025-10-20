@@ -6,7 +6,7 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 12:37:30 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/10/08 12:37:31 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/20 11:13:54 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ int main()
         club.setType("some other type of club");
         jim.attack();
     }
-    return 0;
+    return (0);
 }
