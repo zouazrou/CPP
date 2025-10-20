@@ -6,7 +6,7 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 11:23:23 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/10/19 09:38:57 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/20 11:00:45 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class HumanA
         Weapon      &weapon;
         
         HumanA(std::string name, Weapon &weapon); 
-        // ~HumanA();
+        ~HumanA();
         
         void        attack(void);
 };

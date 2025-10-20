@@ -6,7 +6,7 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 11:23:36 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/10/08 12:08:49 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/20 11:11:20 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 HumanA::HumanA(std::string name, Weapon &weapon) : name(name), weapon(weapon)
 {}
 
-// HumanA::~HumanA()
-// {
-// }
+HumanA::~HumanA()
+{}
 
 void    HumanA::attack(void)
 {
