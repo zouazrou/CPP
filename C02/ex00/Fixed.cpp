@@ -7,6 +7,9 @@ Fixed::Fixed() : num(0)
     std::cout << "Default constructor called" << std::endl;
 }
 
+Fixed::Fixed(int num) : num(num)
+{}
+
 Fixed::Fixed(const Fixed& x)
 {
     std::cout << "Copy constructor called" << std::endl;

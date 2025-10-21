@@ -11,9 +11,10 @@ class Fixed
         static const int    numFracBits;
 
     public:
-        Fixed();                            // ! Default Constructor
-        Fixed(const Fixed &x);              // ! Copy Constructor
-        Fixed& operator= (const Fixed& f);  // ! Copy assignment operator
+        Fixed();
+        Fixed(int num);
+        Fixed(const Fixed &x);
+        Fixed& operator= (const Fixed& f);
         ~Fixed();
         int getRawBits( void ) const;
         void setRawBits( int const raw );
