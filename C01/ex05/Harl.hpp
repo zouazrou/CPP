@@ -6,7 +6,7 @@
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 21:53:51 by zouazrou          #+#    #+#             */
-/*   Updated: 2025/10/19 09:47:20 by zouazrou         ###   ########.fr       */
+/*   Updated: 2025/10/21 08:15:13 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ class Harl
         void    error(void);
         void    noFunc(void);
         
+        void        (Harl::*arrayFuns[NUM_FUN + 1])(void);
+        std::string nameFunctions[NUM_FUN];
     public:
         Harl();
         ~Harl();
-        void        (Harl::*arrayFuns[NUM_FUN + 1])(void);
-        std::string nameFunctions[NUM_FUN];
         void        complain( std::string level );
 };
 
