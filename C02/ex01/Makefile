@@ -1,6 +1,6 @@
 CXX = c++
 
-CXXFLAGS = -Wall -Wextra -Werror -g 
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 
 SRC = main.cpp Fixed.cpp
 
