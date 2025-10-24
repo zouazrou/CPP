@@ -4,30 +4,30 @@ const int Fixed::numFracBits = 8;
 
 Fixed::Fixed() : num(0)
 {
-    std::cout << "Default constructor called" << std::endl;
+    // std::cout << "Default constructor called" << std::endl;
 }
 
 Fixed::Fixed(const int num)
 {
-    std::cout << "Int constructor called" << std::endl;
+    // std::cout << "Int constructor called" << std::endl;
     setRawBits(round(num * (1 << numFracBits)));
 }
 
 Fixed::Fixed(const float num)
 {
-    std::cout << "Float constructor called" << std::endl;
+    // std::cout << "Float constructor called" << std::endl;
     setRawBits(round(num * (1 << numFracBits)));
 }
 
 Fixed::Fixed(const Fixed& x)
 {
-    std::cout << "Copy constructor called" << std::endl;
+    // std::cout << "Copy constructor called" << std::endl;
     *this = x;
 }
 
 Fixed& Fixed::operator= (const Fixed& f)
 {
-    std::cout << "Copy assignment operator called" << std::endl;
+    // std::cout << "Copy assignment operator called" << std::endl;
     this->num = f.getRawBits();
     return (*this);
 }
@@ -40,7 +40,7 @@ std::ostream& operator<< (std::ostream& OUT, const Fixed & f)
 
 Fixed::~Fixed()
 { 
-    std::cout << "Destructor called" << std::endl;
+    // std::cout << "Destructor called" << std::endl;
 }
 
 int Fixed::getRawBits(void) const
@@ -68,83 +68,113 @@ float Fixed::toFloat( void ) const
 // ! Comparison operator overloading
 bool    Fixed::operator>(const Fixed& f) const
 {
-    return (this->toFloat() > f.toFloat());
+    return (this->getRawBits() > f.getRawBits());
 }
 
 bool    Fixed::operator<(const Fixed& f) const
 {
-    return (this->toFloat() < f.toFloat());
+    return (this->getRawBits() < f.getRawBits());
 }
 
 bool    Fixed::operator>=(const Fixed& f) const
 {
-    return (this->toFloat() >= f.toFloat());
+    return (this->getRawBits() >= f.getRawBits());
 }
 
 bool    Fixed::operator<=(const Fixed& f) const
 {
-    return (this->toFloat() <= f.toFloat());
+    return (this->getRawBits() <= f.getRawBits());
 }
 
 bool    Fixed::operator==(const Fixed& f) const
 {
-    return (this->toFloat() == f.toFloat());
+    return (this->getRawBits() == f.getRawBits());
 }
 
 bool    Fixed::operator!=(const Fixed& f) const
 {
-    return (this->toFloat() != f.toFloat());
+    return (this->getRawBits() != f.getRawBits());
 }
 
 // ! arithmetic operators
 Fixed Fixed::operator+(const Fixed& f) const
 {
-    Fixed result(this->toFloat() + f.toFloat());
+    Fixed result((this->getRawBits() + f.getRawBits()) / (float)(1 << this->numFracBits));
     return (result);
 }
 
 Fixed Fixed::operator-(const Fixed& f) const
 {
-    Fixed result(this->toFloat() - f.toFloat());
+    Fixed result((this->getRawBits() - f.getRawBits()) / (float)(1 << this->numFracBits));
     return (result);
 }
 
 Fixed Fixed::operator*(const Fixed& f) const
 {
-    Fixed result(this->toFloat() * f.toFloat());
+    Fixed result((this->getRawBits() * f.getRawBits()) / (float)(1 << (this->numFracBits << 1)));
     return (result);
 }
 
 Fixed Fixed::operator/(const Fixed& f) const
 {
-    Fixed result(this->toFloat() / f.toFloat());
+    if (!f.getRawBits())
+    {
+        std::cerr << "error: division by zero" << std::endl;
+        exit(1);
+    }
+    Fixed result((this->getRawBits() / (float)f.getRawBits()));
     return (result);
 }
 
 // ! Increament & Decreament
-// ? Post-Fix
-Fixed   Fixed::operator++()
-{
-    Fixed   result(*this + (1 / (float)(1 << this->numFracBits)));
-    return (result);
-}
-
-Fixed   Fixed::operator--()
-{
-    Fixed   result(*this + (1 / (float)(1 << this->numFracBits)));
-    return (result);
-}
-
 // ? Pre-Fix
+Fixed&   Fixed::operator++()
+{
+    this->setRawBits(this->getRawBits() + 1);
+    return (*this);
+}
 
-// Fixed&   Fixed::operator++()
-// {
-//     Fixed   result(*this + (1 / (float)(1 << this->numFracBits)));
-//     return (result);
-// }
+Fixed&   Fixed::operator--()
+{
+    this->setRawBits(this->getRawBits() - 1);
+    return (*this);
+}
 
-// Fixed&   Fixed::operator--()
-// {
-//     Fixed   result(*this + (1 / (float)(1 << this->numFracBits)));
-//     return (result);
-// }
+// ? Post-Fix
+Fixed   Fixed::operator++(int)
+{
+    Fixed   result = *this;
+
+    this->setRawBits(this->getRawBits()+1);
+    return (result);
+}
+
+Fixed   Fixed::operator--(int)
+{
+    Fixed   result = *this;
+
+    this->setRawBits(this->getRawBits()+1);
+    return (result);
+}
+
+// ! max & min
+
+Fixed&          Fixed::min(Fixed& f1, Fixed& f2)
+{
+    return ((f1 < f2) ? f1 : f2);
+}
+
+const Fixed&    Fixed::min(const Fixed& f1, const Fixed& f2)
+{
+    return ((f1 < f2) ? f1 : f2);
+}
+
+Fixed&          Fixed::max(Fixed& f1, Fixed& f2)
+{
+    return ((f1 > f2) ? f1 : f2);
+}
+
+const Fixed&    Fixed::max(const Fixed& f1, const Fixed& f2)
+{
+    return ((f1 > f2) ? f1 : f2);
+}
