@@ -10,7 +10,6 @@ class Fixed
     private:
         int                 num;
         static const int    numFracBits;
-        static const int    numFracBits;
 
     public:
         Fixed();
@@ -40,16 +39,18 @@ class Fixed
         Fixed operator/(const Fixed& f) const;
 
         // ! Increament & Decreament
-        Fixed   operator++();
-        Fixed   operator--();
-        // Fixed&   operator++();
-        // Fixed&   operator--();
+        // ? Pre-fix
+        Fixed&   operator++(void);
+        Fixed&   operator--(void);
+        // ? Post-fix
+        Fixed   operator++(int);
+        Fixed   operator--(int);
 
         // ! Static fucntion
-        static Fixed& min(Fixed& f1, Fixed& f2);
-        static Fixed& min(const Fixed& f1, const Fixed& f2);
-        static Fixed& max(Fixed& f1, Fixed& f2);
-        static Fixed& max(const Fixed& f1, const Fixed& f2);
+        static          Fixed& min(Fixed& f1, Fixed& f2);
+        static const    Fixed& min(const Fixed& f1, const Fixed& f2);
+        static          Fixed& max(Fixed& f1, Fixed& f2);
+        static const    Fixed& max(const Fixed& f1, const Fixed& f2);
 };
 
 std::ostream&   operator<<(std::ostream& OUT, Fixed const& f);
