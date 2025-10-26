@@ -96,22 +96,22 @@ void    ClapTrap::beRepaired(unsigned int amount)
 }
 
 // ********encapsulation***********
-std::string ClapTrap::getName(void)
+std::string ClapTrap::getName(void) const
 {
     return (this->name);
 }
 
-int         ClapTrap::getHitPoints(void)
+int         ClapTrap::getHitPoints(void) const
 {
     return (this->hitPoints);
 }
 
-int         ClapTrap::getEnergyPoints(void)
+int         ClapTrap::getEnergyPoints(void) const
 {
     return (this->energyPoints);
 }
 
-int         ClapTrap::getAttackDamage(void)
+int         ClapTrap::getAttackDamage(void) const
 {
     return (this->attackDamage);
 }
