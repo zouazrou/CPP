@@ -2,6 +2,7 @@
 # define CLAPTRAP_HPP
 
 #include <string>
+#include <iostream>
 
 class ClapTrap
 {
@@ -23,14 +24,5 @@ public:
     void    takeDamage(unsigned int amount);
     void    beRepaired(unsigned int amount);
 };
-
-ClapTrap::ClapTrap(/* args */)
-{
-}
-
-ClapTrap::~ClapTrap()
-{
-}
-
 
 #endif
