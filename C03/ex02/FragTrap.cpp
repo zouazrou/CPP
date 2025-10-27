@@ -34,7 +34,37 @@ FragTrap::~FragTrap()
     std::cout << "FragTrap: Destructor Called" << std::endl;
 }
 
+// *********
+void FragTrap::attack(const std::string& target)
+{
+    if (!getHitPoints())
+    {
+        std::cout << "hit Points is Empty !" << std::endl;
+        return ;
+    }
+    if (!getEnergyPoints())
+    {
+        std::cout << "Energy Points is Empty !" << std::endl;
+        return ;
+    }
+    std::cout << "FragTrap " << getName()
+              << " attacks " << target
+              << ", causing " << getAttackDamage()
+              << " points of damage!" << std::endl;
+    setEnergyPoints(getEnergyPoints() - 1);
+}
+
 void FragTrap::highFivesGuys(void)
 {
-    std::cout << << std::enld;
+    if (!getHitPoints())
+    {
+        std::cout << "Hit Points is Empty !" << std::endl;
+        return ;
+    }
+    if (!getEnergyPoints())
+    {
+        std::cout << "Energy Points is Empty !" << std::endl;
+        return ;
+    }
+    std::cout << "Can You give me Five?" << std::endl;
 }
