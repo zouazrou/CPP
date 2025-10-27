@@ -36,6 +36,16 @@ ScavTrap::~ScavTrap()
 
 void    ScavTrap::guardGate(void)
 {
+    if (!getHitPoints())
+    {
+        std::cout << "hit Points is Empty !" << std::endl;
+        return ;
+    }
+    if (!getEnergyPoints())
+    {
+        std::cout << "Energy Points is Empty !" << std::endl;
+        return ;
+    }
     std::cout << "ScavTrap: Gate keeper mode (Active)" << std::endl;
 }
 
