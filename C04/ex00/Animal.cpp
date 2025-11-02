@@ -23,6 +23,7 @@ Animal::~Animal()
     std::cout << "Animal: Destructor called" << std::endl;
 }
 
+// *******
 std::string Animal::getType(void) const
 {
     return (this->type);
@@ -33,7 +34,7 @@ void        Animal::setType(std::string type)
     this->type = type;
 }
 
-void Animal::makeSound(void)
+void Animal::makeSound(void) const
 {
     std::cout << "No Sound" << std::endl;
 }

@@ -25,7 +25,8 @@ Cat::~Cat()
     std::cout << "Cat: Destructor called" << std::endl;
 }
 
-void    Cat::makeSound(void) override
+// ************
+void    Cat::makeSound(void) const
 {
-    std::cout << "Meooooow !"<< std::endl;
+    std::cout << "Meooooow !" << std::endl;
 }

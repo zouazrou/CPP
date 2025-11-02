@@ -26,7 +26,7 @@ Dog::~Dog()
 }
 
 
-void    Dog::makeSound(void) override
+void    Dog::makeSound(void) const
 {
     std::cout << "Bark !"<< std::endl;
 }
