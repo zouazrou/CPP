@@ -14,9 +14,10 @@ Dog::Dog(Dog& src) : Animal(src)
 
 Dog& Dog::operator =(const Dog& src)
 {
+    std::cout << "Dog: Copy assignment operator called" << std::endl;
     if (this != &src)
         Animal::operator=(src);
-    std::cout << "Dog: Copy assignment operator called" << std::endl;
+    return (*this);
 }
 
 Dog::~Dog()
@@ -25,7 +26,7 @@ Dog::~Dog()
 }
 
 
-void    Dog::makeSound(void)
+void    Dog::makeSound(void) override
 {
     std::cout << "Bark !"<< std::endl;
 }
