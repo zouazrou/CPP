@@ -8,7 +8,7 @@ class Cat : public Animal
 {
 public:
     Cat();
-    Cat(Cat& src);
+    Cat(const Cat& src);
     Cat& operator =(const Cat& src);
     ~Cat();
     

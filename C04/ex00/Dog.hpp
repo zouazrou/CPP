@@ -8,7 +8,7 @@ class Dog : public Animal
 {
 public:
     Dog();
-    Dog(Dog& src);
+    Dog(const Dog& src);
     Dog& operator =(const Dog& src);
     ~Dog();
 

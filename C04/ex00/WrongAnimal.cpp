@@ -5,7 +5,7 @@ WrongAnimal::WrongAnimal()
     std::cout << "WrongAnimal: Default constructor called" << std::endl;
 }
 
-WrongAnimal::WrongAnimal(WrongAnimal& src)
+WrongAnimal::WrongAnimal(const WrongAnimal& src)
 {
     std::cout << "WrongAnimal: Copy constructor called" << std::endl;
     this->type = src.type;
