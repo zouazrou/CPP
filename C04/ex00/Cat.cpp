@@ -14,9 +14,10 @@ Cat::Cat(Cat& src) : Animal(src)
 
 Cat& Cat::operator =(const Cat& src)
 {
+    std::cout << "Cat: Copy assignment operator called" << std::endl;
     if (this != &src)
         Animal::operator=(src);
-    std::cout << "Cat: Copy assignment operator called" << std::endl;
+    return (*this);
 }
 
 Cat::~Cat()
@@ -24,7 +25,7 @@ Cat::~Cat()
     std::cout << "Cat: Destructor called" << std::endl;
 }
 
-void    Cat::makeSound(void)
+void    Cat::makeSound(void) override
 {
     std::cout << "Meooooow !"<< std::endl;
 }
