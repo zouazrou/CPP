@@ -12,7 +12,7 @@ public:
     Cat& operator =(const Cat& src);
     ~Cat();
     
-    void makeSound(void);
+    void makeSound(void) const;
 };
 
 #endif 
