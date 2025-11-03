@@ -40,7 +40,7 @@ void AMateria::use(ICharacter &target)
 {
     if (!type.compare("ice"))
         std::cout << "* shoots an ice bolt at " << target.name << std::endl;
-    else
+    if (!type.compare("cure"))
         std::cout << "* heals " << target.name << "'s wounds *" << std::endl;
 }
 
