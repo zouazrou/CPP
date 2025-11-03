@@ -1,20 +1,20 @@
 #include "Animal.hpp"
 
-Animal::Animal()
+Animal::Animal() : type("AnimalType")
 {
     std::cout << "Animal: Default constructor called" << std::endl;
 }
 
-Animal::Animal(const Animal& src)
+Animal::Animal(const Animal& src) : type(src.type)
 {
     std::cout << "Animal: Copy constructor called" << std::endl;
-    this->type = src.type;
 }
 
 Animal& Animal::operator =(const Animal& src)
 {
     std::cout << "Animal: Copy assignment operator called" << std::endl;
-    this->type = src.type;
+    if (this != &src)
+        this->type = src.type;
     return (*this);
 }
 

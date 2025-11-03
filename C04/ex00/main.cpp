@@ -21,18 +21,19 @@ int main(void)
     delete j;
     delete i;
     
-    const WrongAnimal *deta = new WrongAnimal();
-    const Animal *a = new Dog();
-    const WrongAnimal *b = new WrongCat();
     std::cout << "=====================" << std::endl;
-    std::cout << a->getType() << " " << std::endl;
-    std::cout << b->getType() << " " << std::endl;
-    b->makeSound();
-    a->makeSound();
+    const WrongAnimal *deta = new WrongAnimal();
+    const Animal *correctDog = new Dog();
+    const WrongAnimal *wrongCat = new WrongCat();
+    std::cout << "=====================" << std::endl;
+    std::cout << correctDog->getType() << " " << std::endl;
+    std::cout << wrongCat->getType() << " " << std::endl;
+    wrongCat->makeSound();
+    correctDog->makeSound();
     deta->makeSound();
     std::cout << "=====================" << std::endl;
     delete deta;
-    delete a;
-    delete b;
+    delete correctDog;
+    delete wrongCat;
     return 0;
 }

@@ -1,20 +1,20 @@
 #include "WrongAnimal.hpp"
 
-WrongAnimal::WrongAnimal()
+WrongAnimal::WrongAnimal() : type("WrongAnimalType")
 {
     std::cout << "WrongAnimal: Default constructor called" << std::endl;
 }
 
-WrongAnimal::WrongAnimal(const WrongAnimal& src)
+WrongAnimal::WrongAnimal(const WrongAnimal& src) : type(src.type)
 {
     std::cout << "WrongAnimal: Copy constructor called" << std::endl;
-    this->type = src.type;
 }
 
 WrongAnimal& WrongAnimal::operator =(const WrongAnimal& src)
 {
     std::cout << "WrongAnimal: Copy assignment operator called" << std::endl;
-    this->type = src.type;
+    if (this != &src)
+        this->type = src.type;
     return (*this);
 }
 
