@@ -7,26 +7,33 @@
 
 int main(void)
 {
-    Animal *arr[4];
+    const Animal *meta = new Animal();
+    const Animal *j = new Dog();
+    const Animal *i = new Cat();
+    std::cout << "=====================" << std::endl;
+    std::cout << j->getType() << " " << std::endl;
+    std::cout << i->getType() << " " << std::endl;
+    i->makeSound(); // will output the cat sound!
+    j->makeSound();
+    meta->makeSound();
+    std::cout << "=====================" << std::endl;
+    delete meta;
+    delete j;
+    delete i;
     
-    std::cout << std::endl << "------new-Dogs-------" << std::endl;
-    for (int i = 0; i < 2; i++)
-        arr[i] = new Dog;
-    
-    std::cout << std::endl << "------new-Cats-------" << std::endl;
-    for (int i = 2; i < 4; i++)
-        arr[i] = new Cat;
-    
-    std::cout << std::endl << "------Deep-Copy-Dog-------" << std::endl;
-    Dog srcDog;
-    Dog destDog(srcDog);
-
-    std::cout << std::endl << "------Deep-Copy-Cat-------" << std::endl;
-    Cat srcCat;
-    Cat destCat(srcCat);
-    
-    std::cout << std::endl << "------Delete-------" << std::endl;
-    for (int i = 0; i < 4; i++)
-        delete arr[i];
-    return (0);
+    std::cout << "=====================" << std::endl;
+    const WrongAnimal *deta = new WrongAnimal();
+    const Animal *correctDog = new Dog();
+    const WrongAnimal *wrongCat = new WrongCat();
+    std::cout << "=====================" << std::endl;
+    std::cout << correctDog->getType() << " " << std::endl;
+    std::cout << wrongCat->getType() << " " << std::endl;
+    wrongCat->makeSound();
+    correctDog->makeSound();
+    deta->makeSound();
+    std::cout << "=====================" << std::endl;
+    delete deta;
+    delete correctDog;
+    delete wrongCat;
+    return 0;
 }
