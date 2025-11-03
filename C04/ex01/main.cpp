@@ -1,39 +1,52 @@
 #include "Animal.hpp"
 #include "Dog.hpp"
 #include "Cat.hpp"
-#include "WrongAnimal.hpp"
-#include "WrongCat.hpp"
 #include <iostream>
 
-int main(void)
-{
-    const Animal *meta = new Animal();
-    const Animal *j = new Dog();
-    const Animal *i = new Cat();
-    std::cout << "=====================" << std::endl;
-    std::cout << j->getType() << " " << std::endl;
-    std::cout << i->getType() << " " << std::endl;
-    i->makeSound(); // will output the cat sound!
-    j->makeSound();
-    meta->makeSound();
-    std::cout << "=====================" << std::endl;
-    delete meta;
-    delete j;
-    delete i;
-    
-    std::cout << "=====================" << std::endl;
-    const WrongAnimal *deta = new WrongAnimal();
-    const Animal *correctDog = new Dog();
-    const WrongAnimal *wrongCat = new WrongCat();
-    std::cout << "=====================" << std::endl;
-    std::cout << correctDog->getType() << " " << std::endl;
-    std::cout << wrongCat->getType() << " " << std::endl;
-    wrongCat->makeSound();
-    correctDog->makeSound();
-    deta->makeSound();
-    std::cout << "=====================" << std::endl;
-    delete deta;
-    delete correctDog;
-    delete wrongCat;
+#define NUM_ANIMAL  4
+
+int main() {
+    const Animal* animals[NUM_ANIMAL];
+
+    // Create half Dog and half Cat objects
+    std::cout << std::endl << "==========NEW-DOG==========" << std::endl;
+    for (int i = 0; i < NUM_ANIMAL / 2; ++i) {
+        animals[i] = new Dog();
+    }
+    std::cout << std::endl << "==========NEW-CAT==========" << std::endl;
+    for (int i = NUM_ANIMAL / 2; i < NUM_ANIMAL; ++i) {
+        animals[i] = new Cat();
+    }
+
+    std::cout << std::endl << "==========MakeSound==========" << std::endl;
+
+    // Call makeSound for each Animal
+    for (int i = 0; i < NUM_ANIMAL; ++i) {
+        animals[i]->makeSound();
+    }
+
+    std::cout << std::endl << "==========DELETE==========" << std::endl;
+
+    // Delete all Animals
+    for (int i = 0; i < NUM_ANIMAL; ++i) {
+        delete animals[i];
+    }
+
+    std::cout << std::endl << "==========DEEP-COPY-DOG==========" << std::endl;
+
+    // Test deep copy
+    Dog dog1;
+    Dog dog2 = dog1; // Copy constructor
+    Dog dog3;
+    dog3 = dog1; // Copy assignment operator
+
+    std::cout << std::endl << "==========DEEP-COPY-CAT==========" << std::endl;
+    Cat cat1;
+    Cat cat2 = cat1; // Copy constructor
+    Cat cat3;
+    cat3 = cat1; // Copy assignment operator
+
+    std::cout << std::endl << "==========DESTRUCTOR==========" << std::endl;
+
     return 0;
 }
