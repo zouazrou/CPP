@@ -4,14 +4,11 @@ Cat::Cat() : Animal()
 {
     std::cout << "Cat: Default constructor called" << std::endl;
     this->type = "Cat";
-    this->BrainPtr = new Brain();
 }
 
 Cat::Cat(const Cat& src) : Animal(src)
 {
     std::cout << "Cat: Copy constructor called" << std::endl;
-    this->type = src.type;
-    this->BrainPtr = new Brain();
 }
 
 Cat& Cat::operator =(const Cat& src)
@@ -25,8 +22,6 @@ Cat& Cat::operator =(const Cat& src)
 Cat::~Cat()
 {
     std::cout << "Cat: Destructor called" << std::endl;
-    delete this->BrainPtr;
-    // this->BrainPtr = NULL;
 }
 
 // ************

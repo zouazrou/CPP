@@ -2,7 +2,7 @@ CXX = c++
 
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRC = main.cpp Dog.cpp Cat.cpp Animal.cpp WrongAnimal.cpp WrongCat.cpp Brain.cpp
+SRC = main.cpp Dog.cpp Cat.cpp Animal.cpp WrongAnimal.cpp WrongCat.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
@@ -17,10 +17,10 @@ $(NAME) : $(OBJ)
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean :
-	rm -rf $(OBJ)
+	rm -f $(OBJ)
 	
 fclean : clean
-	rm -rf $(NAME)
+	rm -f $(NAME)
 
 re : fclean all
 
