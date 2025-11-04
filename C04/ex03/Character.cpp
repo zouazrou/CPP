@@ -10,6 +10,7 @@ Character::Character() : currSize(0)
 Character::Character(std::string name) : name(name)
 {
     // std::cout << "Character: Param constructor called" << std::endl;
+    this->currSize = 0;
     for (int i = 0; i < NUM_MTR; i++)
     {
         this->slot[i] = NULL;
@@ -30,6 +31,8 @@ Character::Character(const Character& src)
 Character& Character::operator =(const Character& src)
 {
     // std::cout << "Character: Copy assignment operator constructor called" << std::endl;
+    if (this == &src)
+        return (*this);
     this->currSize = src.currSize;
     this->name = src.name;
     for (int i = 0; i < NUM_MTR; i++)
@@ -58,7 +61,7 @@ std::string const   &Character::getName() const
 
 void                Character::equip(AMateria *m)
 {
-    if (currSize == NUM_MTR)
+    if (currSize == NUM_MTR || m == NULL)
         return ;
     for (int i = 0; i < NUM_MTR; i++)
     {

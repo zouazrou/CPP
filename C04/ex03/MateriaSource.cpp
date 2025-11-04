@@ -47,7 +47,7 @@ MateriaSource::~MateriaSource()
 
 void MateriaSource::learnMateria(AMateria *m)
 {
-    if (currSize == NUM_MTR)
+    if (currSize == NUM_MTR || m == NULL)
         return ;
     for (int i = 0; i < NUM_MTR; i++)
     {
