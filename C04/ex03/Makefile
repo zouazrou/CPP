@@ -1,8 +1,8 @@
-CXX = c++
+ CXX = clang++
 
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRC = main.cpp AMateria.cpp
+SRC = AMateria.cpp Character.cpp Cure.cpp Ice.cpp MateriaSource.cpp main.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

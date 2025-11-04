@@ -2,23 +2,23 @@
 
 AMateria::AMateria()
 {
-    std::cout << "AMateria: Default constructor called" << std::endl;
+    // std::cout << "AMateria: Default constructor called" << std::endl;
 }
 
 AMateria::AMateria(std::string const &type) : type(type)
 {
-    std::cout << "AMateria: Default constructor called" << std::endl;
+    // std::cout << "AMateria: Default constructor called" << std::endl;
 }
 
 AMateria::AMateria(const AMateria& src)
 {
-    std::cout << "AMateria: Copy constructor called" << std::endl;
+    // std::cout << "AMateria: Copy constructor called" << std::endl;
     this->type = src.type;
 }
 
 AMateria& AMateria::operator= (const AMateria& src)
 {
-    std::cout << "AMateria: Copy assignment operator called" << std::endl;
+    // std::cout << "AMateria: Copy assignment operator called" << std::endl;
     if (this != &src)
         this->type = src.type;
     return (*this);
@@ -26,12 +26,12 @@ AMateria& AMateria::operator= (const AMateria& src)
 
 AMateria::~AMateria()
 {
-    std::cout << "AMateria: Destructor called" << std::endl;
+    // std::cout << "AMateria: Destructor called" << std::endl;
 }
 
 
 // ***********
-std::string const &AMateria::getType() const // Returns the materia type
+std::string const &AMateria::getType() const
 {
     return (this->type);
 }
@@ -39,8 +39,8 @@ std::string const &AMateria::getType() const // Returns the materia type
 void AMateria::use(ICharacter &target)
 {
     if (!type.compare("ice"))
-        std::cout << "* shoots an ice bolt at " << target.name << std::endl;
+        std::cout << "* shoots an ice bolt at " << target.getName() << std::endl;
     if (!type.compare("cure"))
-        std::cout << "* heals " << target.name << "'s wounds *" << std::endl;
+        std::cout << "* heals " << target.getName() << "'s wounds *" << std::endl;
 }
 
