@@ -53,7 +53,7 @@ void MateriaSource::learnMateria(AMateria *m)
     {
         if (!slot[i])
         {
-            slot[i] = m->clone();
+            slot[i] = m;
             currSize++;
             return ;
         }
