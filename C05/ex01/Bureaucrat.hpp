@@ -3,6 +3,10 @@
 
 #include <iostream>
 #include <exception>
+#include "Form.hpp"
+
+// ? Forward Declaration
+class Form;
 
 class Bureaucrat
 {
@@ -21,9 +25,11 @@ public:
     std::string getName(void) const;
     int         getGrade(void) const;
 
-
+    // **Other Methods**
     void    promote(void);
     void    demote(void);
+    void    signForm(Form& f);
+
     // **Exception Classes**
     class GradeTooHighException : public std::exception
     {

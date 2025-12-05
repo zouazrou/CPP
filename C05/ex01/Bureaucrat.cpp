@@ -28,29 +28,37 @@ Bureaucrat& Bureaucrat::operator =(const Bureaucrat& src)
 Bureaucrat::~Bureaucrat()
 {}
 
-// *******
-std::ostream& operator<<(std::ostream &out, const Bureaucrat &c)
-{
-    out << c.getName() << ", bureaucrat grade " << c.getGrade() << ".";
-    return (out);
-}
-
+// **Other Methods**
 void    Bureaucrat::promote()
 {
     if (this->grade == 1)
-        throw GradeTooHighException();
+    throw GradeTooHighException();
     else
-        this->grade -= 1;
+    this->grade -= 1;
 }
 
 void    Bureaucrat::demote()
 {
     if (this->grade == 150)
-        throw GradeTooLowException();
+    throw GradeTooLowException();
     else
-        this->grade += 1;
+    this->grade += 1;
 }
 
+void    Bureaucrat::signForm(Form& f)
+{
+    try
+    {
+        f.beSigned(*this);
+        std::cout << this->getName() << " signed " << f.getName() << std::endl;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << this->getName() << " couldn't sign " << " because " << e.what() << '.' << std::endl;
+    }
+}
+
+// **Getters**
 std::string Bureaucrat::getName(void) const
 {
     return (this->name);
@@ -63,3 +71,8 @@ int         Bureaucrat::getGrade(void) const
 
 // *******
 
+std::ostream& operator<<(std::ostream &out, const Bureaucrat &c)
+{
+    out << c.getName() << ", bureaucrat grade " << c.getGrade() << ".";
+    return (out);
+}
