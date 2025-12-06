@@ -1,37 +1,43 @@
-#include "Form.hpp"
+#include "AForm.hpp"
 
-Form::Form() : name(""), isSigned(false), gradeToSign(150), gradeToExec(150) 
-{}
-
-Form::Form(const std::string& name, const int toSign, const int toExec) : name(name), isSigned(false), gradeToSign(toSign), gradeToExec(toExec)
+AForm::AForm() : name(""), isSigned(false), gradeToSign(150), gradeToExec(150) 
 {
-    if (toSign < 1 || toExec < 1)
-        throw Form::GradeTooHighException();
-    if (toSign > 150 || toExec > 150)
-        throw Form::GradeTooLowException();
 }
 
-Form::Form(const Form& src) : name(src.name), isSigned(false), gradeToSign(src.gradeToSign), gradeToExec(src.gradeToExec)
-{}
+AForm::AForm(const std::string& name, const int toSign, const int toExec) : name(name), isSigned(false), gradeToSign(toSign), gradeToExec(toExec)
+{
+    if (toSign < 1 || toExec < 1)
+        throw AForm::GradeTooHighException();
+    if (toSign > 150 || toExec > 150)
+        throw AForm::GradeTooLowException();
+}
 
-const Form Form::operator =(const Form& src)
+AForm::AForm(const AForm& src) : name(src.name), isSigned(false), gradeToSign(src.gradeToSign), gradeToExec(src.gradeToExec)
+{
+}
+
+AForm& AForm::operator =(const AForm& src)
 {
     (void)src;
     return (*this);
 }
 
+AForm::~AForm()
+{
+}
+
 // **Utils**
-void    Form::beSigned(const Bureaucrat& Person)
+void    AForm::beSigned(const Bureaucrat& Person)
 {
     if (Person.getGrade() > this->getGradeToSign())
-        throw Form::GradeTooLowException();
+        throw AForm::GradeTooLowException();
     else
         this->isSigned = true;
 }
 
-std::ostream &operator<<(std::ostream &out, const Form &c)
+std::ostream &operator<<(std::ostream &out, const AForm &c)
 {
-    out << "* Form Name                    : " << c.getName()
+    out << "* AForm Name                   : " << c.getName()
         << "\n* Grade required to sign it    : " << c.getGradeToSign()
         << "\n* Grade required to execute it : " << c.getGradeToExec()
         << "\n* Is Signed                    : " << (c.getIsSign() == false ? "No" : "Yes")
@@ -41,22 +47,22 @@ std::ostream &operator<<(std::ostream &out, const Form &c)
 
 
 // **Getters**
-std::string     Form::getName(void) const
+std::string     AForm::getName(void) const
 {
     return (this->name);
 }
 
-bool            Form::getIsSign(void) const
+bool            AForm::getIsSign(void) const
 {
     return (this->isSigned);
 }
 
-int             Form::getGradeToSign(void) const
+int             AForm::getGradeToSign(void) const
 {
     return (this->gradeToSign);
 }
 
-int             Form::getGradeToExec(void) const
+int             AForm::getGradeToExec(void) const
 {
     return (this->gradeToExec);
 }
