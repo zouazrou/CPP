@@ -14,7 +14,7 @@ Form::Form(const std::string& name, const int toSign, const int toExec) : name(n
 Form::Form(const Form& src) : name(src.name), isSigned(false), gradeToSign(src.gradeToSign), gradeToExec(src.gradeToExec)
 {}
 
-const Form Form::operator =(const Form& src)
+Form& Form::operator =(const Form& src)
 {
     (void)src;
     return (*this);
