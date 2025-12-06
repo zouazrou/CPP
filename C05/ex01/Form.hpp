@@ -19,7 +19,7 @@ public:
     Form();
     Form(const Form& src);
     Form(const std::string& name, const int toSign, const int toExec);
-    const Form operator =(const Form& src);
+    Form& operator =(const Form& src);
     ~Form();
 
     // **Getters**
