@@ -40,6 +40,7 @@ void    RobotomyRequestForm::execute(Bureaucrat const& executor) const
         throw GradeTooLowException();
     // **Form's Action**
     val = rand() % 2;
+    std::cout << "baak! baak! baak..." << std::endl;
     if (val)
         std::cout << target << ": has been robotomized successfully" << std::endl;
     else
