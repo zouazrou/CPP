@@ -64,3 +64,14 @@ int             Form::getGradeToExec(void) const
     return (this->gradeToExec);
 }
 
+// **Exception**
+
+const char *Form::GradeTooHighException::what() const throw()
+{
+    return ("Grade is too high !");
+}
+
+const char *Form::GradeTooLowException::what() const throw()
+{
+    return ("Grade is too low !");
+}

@@ -35,26 +35,17 @@ public:
     // **Exception Classes**
     class GradeTooHighException : public std::exception
     {
-        virtual const char *what() const throw()
-        {
-            return ("Grade is too high !");
-        }
+        virtual const char *what() const throw();
     };
 
     class GradeTooLowException : public std::exception
     {
-        virtual const char *what() const throw()
-        {
-            return ("Grade is too low !");
-        }
+        virtual const char *what() const throw();
     };
 
     class FormNotSignedException : public std::exception
     {
-        virtual const char *what() const throw()
-        {
-            return ("Form does not signed yet!");
-        }
+        virtual const char *what() const throw();
     };
 };
 

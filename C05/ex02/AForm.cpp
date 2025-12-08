@@ -67,3 +67,19 @@ int             AForm::getGradeToExec(void) const
     return (this->gradeToExec);
 }
 
+// **Exception**
+
+const char *AForm::GradeTooHighException::what() const throw()
+{
+    return ("Grade is too high !");
+}
+
+const char *AForm::GradeTooLowException::what() const throw()
+{
+    return ("Grade is too low !");
+}
+
+const char *AForm::FormNotSignedException::what() const throw()
+{
+    return ("Form does not signed yet!");
+}
