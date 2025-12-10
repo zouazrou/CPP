@@ -13,10 +13,15 @@ typedef enum    e_types
     DOUBLE
 }               t_types;
 
-t_types getType(const std::string& s);
 bool    isInt(const std::string& s);
 bool    isChar(const std::string& s);
 bool    isFloat(const std::string& s);
 bool    isDouble(const std::string& s);
+t_types getType(const std::string& s);
+
+void    castToInt(const std::string& s);
+void    castToChar(const std::string& s);
+void    castToFloat(const std::string& s);
+void    castToDouble(const std::string& s);
 
 #endif
