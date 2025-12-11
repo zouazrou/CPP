@@ -1,12 +1,12 @@
 CXX = c++
 
-CXXFLAGS = -Wall -Wextra -Werror 
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRC = main.cpp utils.cpp ScalarConverter.cpp
+SRC = main.cpp ScalarConverter.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
-NAME = exe
+NAME = convert
 
 all : $(NAME)
 
