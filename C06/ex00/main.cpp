@@ -3,19 +3,30 @@
 
 int main(int ac, char *av[])
 {
-    if (ac != 2)
+    if (ac == 2)
+    {
+        ScalarConverter::convert(av[1]);
         return (1);
-    ScalarConverter::convert(av[1]);
-    // if (isChar(av[1]))
-    //     std::cout << "is char" << std::endl;
-    // else if (isInt(av[1]))
-    //     std::cout << "is int" << std::endl;
-    // else if (isFloat(av[1]))
-    //     std::cout << "is float" << std::endl;
-    // else if (isDouble(av[1]))
-    //     std::cout << "is Double" << std::endl;
-    // else
-    //     std::cout << "waaa3" << std::endl;
-    
+    }
+    ScalarConverter::convert("0");
+    std::cout << "---------------------" << std::endl;
+    ScalarConverter::convert("'a'");
+    std::cout << "---------------------" << std::endl;
+    ScalarConverter::convert("42");
+    std::cout << "---------------------" << std::endl;
+    ScalarConverter::convert("42.0f");
+    std::cout << "---------------------" << std::endl;
+    ScalarConverter::convert("42.0");
+    std::cout << "---------------------" << std::endl;
+    ScalarConverter::convert("nan");
+    std::cout << "---------------------" << std::endl;
+    ScalarConverter::convert("nanf");
+    std::cout << "---------------------" << std::endl;
+    ScalarConverter::convert("+inf");
+    std::cout << "---------------------" << std::endl;
+    ScalarConverter::convert("-inf");
+    std::cout << "---------------------" << std::endl;
+    std::cout << "---------------------" << std::endl;
+    ScalarConverter::convert("-inff");
     return 0;
 }
