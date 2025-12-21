@@ -102,16 +102,32 @@ void    BitcoinExchange::Binance(char *fileName)
         //     continue;
         // }
         strm >> val;
-        isValidRow(date, sep, val);
+        if (isValidRow(date, sep, val))
+            std::cout << " < Yeha! Valid Row\n";
+        else
+            std::cerr << " < Error : Invalid Row => " << '\n';
     }
     
 }
 
 bool    BitcoinExchange::isValidRow(std::string& date, std::string& sep, std::string& val)
 {
-    static int i;
-    std::cout << i++ << " -----Date : " << date << ",-----Sep : " << sep << ", -----Val : " << val << '\n';
-    return true;
+    if (!isValidDate(date))
+    {
+        std::cerr << "Error : is not valid date\n";
+        return (false);
+    }
+    if (sep != "|")
+    {
+        std::cerr << "Error : expect '|' instead of " << sep << '\n';
+        return (false);
+    }
+    if (!isValidValue(val))
+    {
+        std::cerr << "Error : value must be between 1 and 1000\n";
+        return (false);
+    }
+    return (true);
 }
 
 bool    BitcoinExchange::isValidValue(std::string& val)
@@ -119,12 +135,12 @@ bool    BitcoinExchange::isValidValue(std::string& val)
     char *pEnd = NULL;
     long n = std::strtod(val.c_str(),&pEnd);
 
-    if (!pEnd && n >= 0 && n <= 1000)
+    if (!*pEnd && n >= 0 && n <= 1000)
         return (true);
     return (false);
 }
 
-bool    convertStrToDate(std::string& date, int& Y, int& M, int& D)
+bool    BitcoinExchange::convertStrToDate(std::string& date, int& Y, int& M, int& D)
 {
     char        *endPtr;
     std::string year, month, day;
@@ -138,7 +154,6 @@ bool    convertStrToDate(std::string& date, int& Y, int& M, int& D)
     getline(strm, year, '-');
     getline(strm, month, '-');
     getline(strm, day);
-    std::cout << "STR-> Year : " << year << ", month : " << month << ", day : " << day << std::endl;
     Y = std::strtol(year.c_str(), &endPtr, 10);
     if (*endPtr)
         return false;
@@ -150,12 +165,24 @@ bool    convertStrToDate(std::string& date, int& Y, int& M, int& D)
         return false;
     return (true);
 }
+
 bool    BitcoinExchange::isValidDate(std::string& date)
 {
+    tm  dt;
     int Y, M, D;
 
     if (!convertStrToDate(date, Y, M, D))
         return (false);
-    
+    dt.tm_year = Y - 1900;
+    dt.tm_mon = M - 1;
+    dt.tm_mday = D;
+    dt.tm_hour = 0;
+    dt.tm_min = 0;
+    dt.tm_sec = 0;
+    dt.tm_isdst = 0;
+    if (mktime(&dt) == -1)
+        return (false);
+    if (dt.tm_year + 1900 != Y || dt.tm_mon + 1 != M || dt.tm_mday != D)
+        return (false);
     return (true);
 }
