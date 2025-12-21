@@ -1,11 +1,12 @@
 #ifndef BITCOINEXCHANGE_HPP
 # define BITCOINEXCHANGE_HPP
 
-#include <iostream>
-#include <fstream>
-#include <map>
-#include <sstream>
-#include <algorithm>
+# include <iostream>
+# include <fstream>
+# include <map>
+# include <sstream>
+# include <algorithm>
+# include <ctime>
 
 #define DEAFULT_DB "data.csv"
 
@@ -23,8 +24,10 @@ public:
     BitcoinExchange& operator =(const BitcoinExchange& other);
     ~BitcoinExchange();
     
-    void    ParseDB(void);
     void    Binance(char *file);
+
+    void    ParseDB(void);
+    bool    convertStrToDate(std::string& date, int& Y, int& M, int& D);
     bool    isValidRow(std::string& date, std::string& sep, std::string& val);
     bool    isValidValue(std::string& val);
     bool    isValidDate(std::string& date);
