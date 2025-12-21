@@ -41,6 +41,11 @@ void    BitcoinExchange::ParseDB()
         getline(fdb, line);
         if (isFirstLine)
         {
+            if (line.compare("date,exchange_rate"))
+            {
+                std::cerr <<  "Error : Invalid Column Name\n";
+                return ;
+            }
             isFirstLine = false;
             continue;   
         }
@@ -55,4 +60,102 @@ void    BitcoinExchange::ParseDB()
     // ! List map
     // for (std::map<std::string, std::string>::iterator i = this->db_map.begin();  i != this->db_map.end(); i++)
     //     std::cout << "DB[" << i->first << "] = " << i->second << '\n';
+}
+
+
+void    BitcoinExchange::Binance(char *fileName)
+{
+    std::string     line, date, val, sep;
+    bool            isFirstLine;
+    std::ifstream   InputFile(fileName);
+    
+    isFirstLine = true;
+    while (!InputFile.eof())
+    {
+        date.clear();
+        sep.clear();
+        val.clear();
+        getline(InputFile, line);
+        if (line.empty())
+            return ;
+        if (isFirstLine)
+        {
+            if (line.compare("date | value"))
+            {
+                std::cerr <<  "Error : Invalid Column Name\n";
+                return ;
+            }
+            isFirstLine = false;
+            continue;   
+        }
+        std::stringstream strm(line);
+        strm >> date;
+        // if (strm.eof())
+        // {
+        //     std::cerr <<  "Error : Invalid Row\n";
+        //     continue;
+        // }
+        strm >> sep;
+        // if (strm.eof())
+        // {
+        //     std::cerr <<  "Error : Invalid Row\n";
+        //     continue;
+        // }
+        strm >> val;
+        isValidRow(date, sep, val);
+    }
+    
+}
+
+bool    BitcoinExchange::isValidRow(std::string& date, std::string& sep, std::string& val)
+{
+    static int i;
+    std::cout << i++ << " -----Date : " << date << ",-----Sep : " << sep << ", -----Val : " << val << '\n';
+    return true;
+}
+
+bool    BitcoinExchange::isValidValue(std::string& val)
+{
+    char *pEnd = NULL;
+    long n = std::strtod(val.c_str(),&pEnd);
+
+    if (!pEnd && n >= 0 && n <= 1000)
+        return (true);
+    return (false);
+}
+
+bool    convertStrToDate(std::string& date, int& Y, int& M, int& D)
+{
+    char        *endPtr;
+    std::string year, month, day;
+    
+    if (std::count(date.begin(), date.end(), '-') != 2)
+    {
+        std::cerr << "Error : Bad date format => " << date << '\n';
+        return (false);
+    }
+    std::stringstream strm(date);
+    getline(strm, year, '-');
+    getline(strm, month, '-');
+    getline(strm, day);
+    std::cout << "STR-> Year : " << year << ", month : " << month << ", day : " << day << std::endl;
+    Y = std::strtol(year.c_str(), &endPtr, 10);
+    if (*endPtr)
+        return false;
+    M = std::strtol(month.c_str(), &endPtr, 10);
+    if (*endPtr)
+        return false;
+    D = std::strtol(day.c_str(), &endPtr, 10);
+    if (*endPtr)
+        return false;
+    return (true);
+}
+bool    BitcoinExchange::isValidDate(std::string& date)
+{
+    int Y, M, D;
+
+    if (!convertStrToDate(date, Y, M, D))
+        return (false);
+    
+    return (true);
 }

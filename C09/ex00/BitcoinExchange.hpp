@@ -5,13 +5,13 @@
 #include <fstream>
 #include <map>
 #include <sstream>
+#include <algorithm>
 
 #define DEAFULT_DB "data.csv"
 
 class BitcoinExchange
 {
 private:
-    // std::string inputFile;
     std::map<std::string, std::string> db_map; 
     std::string db;
     
@@ -24,7 +24,10 @@ public:
     ~BitcoinExchange();
     
     void    ParseDB(void);
-
+    void    Binance(char *file);
+    bool    isValidRow(std::string& date, std::string& sep, std::string& val);
+    bool    isValidValue(std::string& val);
+    bool    isValidDate(std::string& date);
 };
 
 #endif
