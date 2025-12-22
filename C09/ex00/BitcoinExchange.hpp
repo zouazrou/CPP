@@ -7,13 +7,14 @@
 # include <sstream>
 # include <algorithm>
 # include <ctime>
+# include <iomanip>
 
 #define DEAFULT_DB "data.csv"
 
 class BitcoinExchange
 {
 private:
-    std::map<std::string, std::string> db_map; 
+    std::map<std::string, std::string> DBMap; 
     std::string db;
     
 public:
@@ -31,6 +32,7 @@ public:
     bool    isValidRow(std::string& date, std::string& sep, std::string& val);
     bool    isValidValue(std::string& val);
     bool    isValidDate(std::string& date);
+    void    doExchange(std::string& date, std::string& val);
 };
 
 #endif

@@ -15,14 +15,15 @@ BitcoinExchange::BitcoinExchange(char *db) : db(db)
     ParseDB();
 }
 
-BitcoinExchange::BitcoinExchange(const BitcoinExchange& other) : db(other.db)
+BitcoinExchange::BitcoinExchange(const BitcoinExchange& other) : DBMap(other.DBMap), db(other.db)
 {}
 
 BitcoinExchange& BitcoinExchange::operator =(const BitcoinExchange& other)
 {
     if (this == &other)
         return *this;
-    db = other.db;
+    this->DBMap = other.DBMap;
+    this->db = other.db;
     return *this;
 }
 
@@ -31,14 +32,16 @@ BitcoinExchange::~BitcoinExchange()
 
 void    BitcoinExchange::ParseDB()
 {
-    std::ifstream   fdb(this->db.c_str());
+    std::ifstream   dataCSV(this->db.c_str());
     std::string     line, key, val;
     bool            isFirstLine;
 
+    if (!dataCSV.is_open())
+        throw std::runtime_error("Error : cannot open database file");
     isFirstLine = true;
-    while (!fdb.eof())
+    while (!dataCSV.eof())
     {
-        getline(fdb, line);
+        getline(dataCSV, line);
         if (isFirstLine)
         {
             if (line.compare("date,exchange_rate"))
@@ -54,12 +57,9 @@ void    BitcoinExchange::ParseDB()
         if (key.empty())
             break;
         getline(strm, val);
-        this->db_map.insert(std::make_pair(key, val));
+        this->DBMap.insert(std::make_pair(key, val));
     }
-    fdb.close();
-    // ! List map
-    // for (std::map<std::string, std::string>::iterator i = this->db_map.begin();  i != this->db_map.end(); i++)
-    //     std::cout << "DB[" << i->first << "] = " << i->second << '\n';
+    dataCSV.close();
 }
 
 
@@ -69,6 +69,8 @@ void    BitcoinExchange::Binance(char *fileName)
     bool            isFirstLine;
     std::ifstream   InputFile(fileName);
     
+    if (!InputFile.is_open())
+        throw std::runtime_error("Error : cannot open input file");
     isFirstLine = true;
     while (!InputFile.eof())
     {
@@ -77,54 +79,41 @@ void    BitcoinExchange::Binance(char *fileName)
         val.clear();
         getline(InputFile, line);
         if (line.empty())
-            return ;
+            continue;
         if (isFirstLine)
         {
             if (line.compare("date | value"))
             {
                 std::cerr <<  "Error : Invalid Column Name\n";
-                return ;
+                return;
             }
             isFirstLine = false;
             continue;   
         }
         std::stringstream strm(line);
         strm >> date;
-        // if (strm.eof())
-        // {
-        //     std::cerr <<  "Error : Invalid Row\n";
-        //     continue;
-        // }
         strm >> sep;
-        // if (strm.eof())
-        // {
-        //     std::cerr <<  "Error : Invalid Row\n";
-        //     continue;
-        // }
         strm >> val;
         if (isValidRow(date, sep, val))
-            std::cout << " < Yeha! Valid Row\n";
-        else
-            std::cerr << " < Error : Invalid Row => " << '\n';
+            doExchange(date, val);
     }
-    
 }
 
 bool    BitcoinExchange::isValidRow(std::string& date, std::string& sep, std::string& val)
 {
     if (!isValidDate(date))
     {
-        std::cerr << "Error : is not valid date\n";
+        std::cerr << "Error : invalid date\n";
         return (false);
     }
     if (sep != "|")
     {
-        std::cerr << "Error : expect '|' instead of " << sep << '\n';
+        std::cerr << "Error : expect '|' instead of '" << sep << "'\n";
         return (false);
     }
     if (!isValidValue(val))
     {
-        std::cerr << "Error : value must be between 1 and 1000\n";
+        std::cerr << "Error : the value must be an integer between 0 and 1000\n";
         return (false);
     }
     return (true);
@@ -132,9 +121,12 @@ bool    BitcoinExchange::isValidRow(std::string& date, std::string& sep, std::st
 
 bool    BitcoinExchange::isValidValue(std::string& val)
 {
-    char *pEnd = NULL;
-    long n = std::strtod(val.c_str(),&pEnd);
-
+    double    n;
+    char    *pEnd;
+    
+    if (val.empty())
+        return (false);
+    n = std::strtod(val.c_str(),&pEnd);
     if (!*pEnd && n >= 0 && n <= 1000)
         return (true);
     return (false);
@@ -155,13 +147,13 @@ bool    BitcoinExchange::convertStrToDate(std::string& date, int& Y, int& M, int
     getline(strm, month, '-');
     getline(strm, day);
     Y = std::strtol(year.c_str(), &endPtr, 10);
-    if (*endPtr)
+    if (*endPtr || Y < 2000)
         return false;
     M = std::strtol(month.c_str(), &endPtr, 10);
-    if (*endPtr)
+    if (*endPtr || M > 12 || M < 1)
         return false;
     D = std::strtol(day.c_str(), &endPtr, 10);
-    if (*endPtr)
+    if (*endPtr || M > 31 || M < 1)
         return false;
     return (true);
 }
@@ -185,4 +177,22 @@ bool    BitcoinExchange::isValidDate(std::string& date)
     if (dt.tm_year + 1900 != Y || dt.tm_mon + 1 != M || dt.tm_mday != D)
         return (false);
     return (true);
+}
+
+void    BitcoinExchange::doExchange(std::string& date, std::string& amount)
+{
+    double  dAmount, dPrice;
+    
+    std::map<std::string, std::string>::iterator it;
+    it = DBMap.lower_bound(date);
+    if (it == DBMap.begin() && it->first != date)
+    {
+        std::cerr << "Error : this date is before the birth of bitcoin!\n";
+        return ;
+    }
+    if (it == DBMap.end() || it->first != date)
+        --it;
+    dAmount = strtod(amount.c_str(), NULL);
+    dPrice = strtod(it->second.c_str(), NULL);
+    std::cout << date << " => " << amount << " = " << std::fixed << std::setprecision(2) << (dAmount * dPrice) << std::endl;
 }
