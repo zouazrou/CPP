@@ -8,14 +8,14 @@ int main(int ac, char *av[])
         std::cerr << "./btw [filename]\n";
         return 1;
     }
-    BitcoinExchange obj;
-
-    obj.Binance(av[1]);
-    // std::string dt = "2012-0-11";
-    // if (obj.isValidDate(dt))
-    //     std::cout << "Valid Date\n";
-    // else
-    //     std::cout << "Invalid Date\n";  
-    // obj.Binance(av[1]);
+    try
+    {
+        BitcoinExchange obj;
+        obj.Binance(av[1]);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
     return 0;
 }
