@@ -1,8 +1,8 @@
 CXX = c++
 
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98
+CXXFLAGS = -Wall -Wextra -std=c++98
 
-SRC = main.cpp PmergeMe.cpp
+SRC = main.cpp 
 
 OBJ = $(SRC:.cpp=.o)
 
