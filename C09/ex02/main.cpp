@@ -5,7 +5,7 @@
 
 #include <cstddef>
 
-static void divideIntoPairs(
+static void div2Pairs(
     const std::vector<int> &seq,
     std::vector< std::pair<int, int> > &pairs,
     bool &hasOdd,
@@ -17,18 +17,17 @@ static void divideIntoPairs(
 
     for (size_t i = 0; i + 1 < seq.size(); i += 2)
     {
-        int a = seq[i];
-        int b = seq[i + 1];
-        if (a < b)
-            std::swap(a, b);
-
-        pairs.push_back(std::make_pair(a, b));
+        if (seq[i] > seq[i+1])
+            pairs.push_back(std::make_pair(seq[i], seq[i+1]));
+        else
+            pairs.push_back(std::make_pair(seq[i+1], seq[i]));
     }
 
-    if (seq.size() % 2 != 0)
+    if (seq.size() % 2 != 0)buildJacobInsertionOrder
     {
         hasOdd = true;
         oddValue = seq.back();
+        // oddValue = seq[seq.size()-1];
     }
 }
 
@@ -119,7 +118,7 @@ void ford_johnson_alg(std::vector<int> &seq)
     std::vector< std::pair<int, int> > pairs;
     bool hasOdd = false;
     int oddValue = 0;
-    divideIntoPairs(seq, pairs, hasOdd, oddValue);
+    div2Pairs(seq, pairs, hasOdd, oddValue);
 
     // 2) Extract winners and recursively sort them -> this is the "main chain"
     std::vector<int> winners;
@@ -201,3 +200,120 @@ int main()
     printVector(input);
     return 0;
 }
+/*
+*What this program is
+This workspace implements a Ford–Johnson / merge-insertion sort variant for a std::vector<int> and demonstrates it on a fixed array. The main algorithm is in ford_johnson_alg in main.cpp. The header PmergeMe.hpp only defines ANSI color macros and isn’t used by the algorithm.
+
+File overview
+PmergeMe.hpp
+Defines color escape sequences (RED, GREEN, …). No classes/functions.
+
+main.cpp
+Contains helper functions plus the sorting routine and a demo main().
+
+Core idea (Ford–Johnson / merge-insertion sort)
+Given a sequence:
+
+Split into pairs (a, b).
+Within each pair, ensure a >= b (so a is the “winner”, b the “loser”).
+Recursively sort the list of winners → this becomes the main chain.
+Insert the losers into the main chain using binary search, but with a bounded search range (each loser is only searched up to the position of its paired winner).
+The order of inserting losers is chosen using Jacobsthal numbers to reduce comparisons.
+Functions, explained
+1) Pairing and normalization
+divideIntoPairs
+
+Inputs: the original sequence seq.
+Outputs:
+pairs: vector of (winner, loser) pairs.
+hasOdd / oddValue: if the input length is odd, the last element is saved separately.
+Logic:
+Walks seq two at a time.
+For each pair (seq[i], seq[i+1]), it swaps so the first is larger: winner >= loser.
+If there is an unpaired last element, it becomes oddValue.
+2) Jacobsthal numbers (for insertion schedule)
+jacobsthal
+
+Computes Jacobsthal numbers iteratively using:
+
+J(0)=0,J(1)=1,J(n)=J(n−1)+2J(n−2)
+Used only to generate the “best” order to insert losers.
+buildJacobInsertionOrder
+
+Builds an index order for inserting losers (except the first loser, which is handled separately).
+Comment in code describes the intended 1-based loser order pattern (e.g., b3,b2,b5,b4,...).
+Returns 0-based indices into the pending losers array.
+3) Printing helper
+printVector
+
+Prints the vector as [a, b, c].
+4) Bounded binary insertion
+boundedBinaryInsert
+
+Inserts value into sorted vector chain, but only searches in the range:
+chain.begin() to chain.begin() + (boundInclusive + 1)
+Uses std::lower_bound to find insertion position, then vector::insert.
+Purpose: in Ford–Johnson, a loser b_i is guaranteed to be 
+≤
+≤ its winner a_i, so it never needs to be inserted after the winner’s position.
+5) Pair comparator
+cmp
+
+Compares pairs by .first (the winner), used for sorting the original pairs by winner.
+The main algorithm
+ford_johnson_alg
+
+Base case
+If seq.size() <= 1, already sorted.
+Step 1: Build normalized pairs
+Calls [divideIntoPairs[](main.cpp) → produces ](http://_vscodecontentref_/35)(winner, loser) pairs + possible odd leftover.
+Step 2: Sort winners recursively
+Extract all winners into winners.
+Recursively calls [ford_johnson_alg[](main.cpp) on ](http://_vscodecontentref_/37)winners.
+After this, winners is sorted: this becomes the initial main chain.
+Step 3: Align losers to the sorted winners (without std::map)
+Because recursion sorted winners, you need the losers in the same order as their corresponding winners in the sorted winners list.
+
+The code does:
+
+Copy pairs into sortedPairs.
+Sort sortedPairs by winner using cmp.
+Build:
+uniqueWinners: each distinct winner value once
+loserBuckets: parallel vector of vectors; each bucket holds all losers for that winner (handles duplicate winners)
+Then for each winner in winners:
+
+Find its winner value in uniqueWinners using lower_bound
+Pop one loser from the corresponding bucket and push it into pending
+Result: pending[i] is the loser paired with winners[i] in the same winner order.
+
+Step 4: Insert losers into the chain
+Start: chain = winners (already sorted)
+Insert the first pending loser (pending[0]) first:
+Find winners[0] position in chain
+Insert loser using boundedBinaryInsert up to that position
+Build the Jacobsthal-based insertion order using buildJacobInsertionOrder
+For each remaining loser index idx in that order:
+Compute the current position of winners[idx] in chain
+Insert pending[idx] bounded up to that position
+Step 5: Insert odd leftover
+If the original input had an odd last element, insert it into the fully built chain using lower_bound over the whole chain.
+Finally:
+
+seq.swap(chain) replaces the input with the sorted result.
+main() demonstration
+main
+
+Builds a std::vector<int> from a fixed array of 22 ints.
+Prints “Before”, runs ford_johnson_alg, prints “After”.
+Notes / behavior details
+Handles duplicates (e.g., there are two 6 values in the sample input) via the “bucket per winner value” approach.
+Correctness relies on winners being sorted and each loser being inserted no later than its paired winner position.
+Performance: uses many vector::insert operations, which are 
+𝑂
+(
+𝑛
+)
+O(n) shifts each; comparison count may be optimized by Jacobsthal ordering, but data movement is still vector-based.
+
+*/
