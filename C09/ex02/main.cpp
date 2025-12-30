@@ -115,20 +115,23 @@ void ford_johnson_alg(std::vector<int> &input, int PairSize)
         printVector(pendV);
         std::cout << "\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" << std::endl;
     }
-    // int JB = 2;
-    // int prev_JB;
-    // int curr_JB = jacobsthal(JB);
-    // while (NumPairs--)
-    // {
-    //     prev_JB = curr_JB;
-    //     curr_JB = std::min(pendV.size(), jacobsthal(++JB));
-    //     for (int it_JB = curr_JB; it_JB > prev_JB; it_JB--)
-    //     {
-    //         std::cout << it_JB << ", ";
-    //     }
-    //     std::cout << std::endl;
-    //     std::cout << std::endl;
-    // }
+    size_t prev_jb, diff_jb, idx_jb;
+    size_t curr_jb = static_cast<size_t>(jacobsthal(2));
+    size_t totolPendElements = pendV.size() / PairSize;
+    size_t totalInsertedElements = 0;
+    idx_jb = 3;
+    for (totalInsertedElements = 0; totalInsertedElements < totolPendElements; totalInsertedElements++)
+    {
+        size_t dist = jacobsthal(idx_jb) - jacobsthal(idx_jb - 1);
+        if (dist > totolPendElements - totalInsertedElements)
+            dist = totolPendElements - totalInsertedElements;
+        while (dist--)
+        {
+            std::cout << "\033[1;34m---> Insert " << pendV[totalInsertedElements] << " to MAIN VECTOR\033[0m" << std::endl;
+            mainV.push_back(pendV[totalInsertedElements]);
+            totalInsertedElements++;
+        }
+    }    
 }
 /*
  * step 1 : put B1 and rest of A*    to MAIN container respectevly
