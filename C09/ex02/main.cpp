@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <algorithm>
 #include "color.hpp"
 
 size_t jacobsthal(size_t n)
@@ -34,42 +35,74 @@ size_t endPair(size_t idx)
     return (idx + 1);
 }
 
-
-void ford_johnson_alg(std::vector<int> &container, int pair_level)
+static size_t jacobsthal_int(size_t n)
 {
-    const size_t units = container.size() / pair_level; // number of full pair_level blocks
-    if (units < 2)
+    if (n == 0) return 0;
+    if (n == 1) return 1;
+    size_t a = 0;
+    size_t b = 1;
+    for (size_t i = 2; i <= n; ++i)
+    {
+        size_t c = b + 2 * a;
+        a = b;
+        b = c;
+    }
+    return b;
+}
+
+static void ford_johnson_sort(std::vector<int> &v)
+{
+    if (v.size() < 2)
         return;
 
-    const size_t limit = units * pair_level;            // ignore leftover remainder
-    const size_t step = static_cast<size_t>(2) * pair_level;
-    {
-        std::cout << RED;
-        PrintContainer(container);
-        std::cout << RESET;
-    }
-    for (size_t start = 0; start + step <= limit; start += step)
-    {
-        size_t first  = start + pair_level - 1;
-        size_t second = start + step - 1;
+    std::vector<int> mainChain;
+    std::vector<int> pend;
 
-        if (container[first] > container[second])
+    for (size_t i = 0; i + 1 < v.size(); i += 2)
+    {
+        int a = v[i];
+        int b = v[i + 1];
+        if (a > b)
+            std::swap(a, b);
+        pend.push_back(a);
+        mainChain.push_back(b);
+    }
+    if ((v.size() % 2) != 0)
+        mainChain.push_back(v.back());
+
+    ford_johnson_sort(mainChain);
+
+    std::vector<int> result = mainChain;
+    if (!pend.empty())
+    {
+        // Insert in Jacobsthal-inspired order (correctness doesn't depend on the order).
+        std::vector<size_t> order;
+        order.push_back(0);
+
+        size_t prevJ = 1; // J(2)
+        for (size_t k = 3;; ++k)
         {
-            std::swap_ranges(container.begin() + start,
-                             container.begin() + start + pair_level,
-                             container.begin() + start + pair_level);
+            size_t j = jacobsthal_int(k);
+            if (j >= pend.size())
+                break;
+            for (size_t idx = j; idx > prevJ; --idx)
+                order.push_back(idx);
+            prevJ = j;
+        }
+        for (size_t idx = pend.size() - 1; idx + 1 > prevJ; --idx)
+            order.push_back(idx);
+
+        for (size_t oi = 0; oi < order.size(); ++oi)
+        {
+            const int value = pend[order[oi]];
+            std::vector<int>::iterator pos = std::lower_bound(result.begin(), result.end(), value);
+            result.insert(pos, value);
         }
     }
-    {
-        std::cout << GREEN;
-        PrintContainer(container);
-        std::cout << RESET;
-    }
-    
-    ford_johnson_alg(container, pair_level * 2);
-    // std::vector<Iterator> pendC, mainC;
 
+    v.swap(result);
 }
+
 /*
  * MAIN : B1, A1, A2
  * PEND : B2, B3 ...
@@ -83,6 +116,10 @@ int main()
         container.push_back(arr[i]);
 
     std::cout << "          SIZE NUMBERS IS : " << container.size() << std::endl;
-    ford_johnson_alg(container, 1);
+    std::cout << "-------- BEFORE FORD-JOHNSON ALGORITHM --------" << std::endl;
+    PrintContainer(container);
+    ford_johnson_sort(container);
+    std::cout << "--------- AFTER FORD-JOHNSON ALGORITHM ---------" << std::endl;
+    PrintContainer(container);
     return 0;
 }
