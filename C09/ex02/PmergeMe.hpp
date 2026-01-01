@@ -59,7 +59,6 @@ public:
     
     // *****************************************
     static void fordJohnson_algorithm(char **list, size_t size);
-    void ParseInput(size_t size, double &num, char **list, char *&ptr, std::deque<uint> &dq, std::vector<uint> &vc);
 };
 
 
