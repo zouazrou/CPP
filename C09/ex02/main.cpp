@@ -25,25 +25,26 @@ template <typename T> void PrintContainer(const T& container)
     std::cout << "]" << std::endl;
 }
 
-void insert_binary_search(std::vector<int> &mainChain, const std::vector<int> &pend, size_t idx)
+void insert_binary_search_vec(std::vector<unsigned int> &mainChain, const std::vector<unsigned int> &pend, size_t idx)
 {
-    const int value = pend[idx];
-    std::vector<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), value);
+    int value = pend[idx];
+    std::vector<unsigned int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), value);
     mainChain.insert(pos, value);
 }
 
-void ford_johnson_sort_vec(std::vector<int> &container)
+void ford_johnson_sort_vec(std::vector<unsigned int> &container)
 {
     if (container.size() < 2)
         return;
 
-    std::vector<int> mainChain;
-    std::vector<int> pend;
+    unsigned int a, b;
+    size_t prevJB, last, n;
+    std::vector<unsigned int>    mainChain, pend;
 
     for (size_t i = 0; i + 1 < container.size(); i += 2)
     {
-        int a = container[i];
-        int b = container[i + 1];
+        a = container[i];
+        b = container[i + 1];
         if (a > b)
             std::swap(a, b);
         pend.push_back(a);
@@ -55,19 +56,19 @@ void ford_johnson_sort_vec(std::vector<int> &container)
     ford_johnson_sort_vec(mainChain);
     
     if (pend.size() >= 1)
-        insert_binary_search(mainChain, pend, 0);
+        insert_binary_search_vec(mainChain, pend, 0);
     if (pend.size() >= 2)
-        insert_binary_search(mainChain, pend, 1);
-    size_t prevJ = 1;
-    size_t k = 2;
-    while (++k)
+        insert_binary_search_vec(mainChain, pend, 1);
+    prevJB = 1; 
+    n = 3;
+    while (n)
     {
-        size_t last = std::min(pend.size() - 1, jacobsthal(k));
-        if (last <= prevJ)
+        last = std::min(pend.size() - 1, jacobsthal(n++));
+        if (last <= prevJB)
             break;
-        for (size_t idx = last; idx > prevJ; --idx)
-            insert_binary_search(mainChain, pend, idx);
-        prevJ = last;
+        for (size_t i = last; i > prevJB; --i)
+            insert_binary_search_vec(mainChain, pend, i);
+        prevJB = last;
     }
     container = mainChain;
 }
@@ -78,7 +79,7 @@ void ford_johnson_sort_vec(std::vector<int> &container)
  */
 int main(int ac, char **av)
 {
-    std::vector<int> container;
+    std::vector<unsigned int> container;
 
     for (int i = 1; i < ac; i++)
     {
