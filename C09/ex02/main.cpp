@@ -25,16 +25,6 @@ template <typename T> void PrintContainer(const T& container)
     std::cout << "]" << std::endl;
 }
 
-size_t startPair(size_t idx, size_t pairSize)
-{
-    return (idx - pairSize + 1);
-}
-
-size_t endPair(size_t idx)
-{
-    return (idx + 1);
-}
-
 static size_t jacobsthal_int(size_t n)
 {
     if (n == 0) return 0;
@@ -50,34 +40,51 @@ static size_t jacobsthal_int(size_t n)
     return b;
 }
 
-static void ford_johnson_sort(std::vector<int> &v)
+static void add_once(std::vector<size_t> &order, std::vector<bool> &used, size_t idx)
 {
-    if (v.size() < 2)
+    if (idx < used.size() && !used[idx])
+    {
+        used[idx] = true;
+        order.push_back(idx);
+    }
+}
+
+static void ford_johnson_sort(std::vector<int> &container)
+{
+    if (container.size() < 2)
         return;
 
     std::vector<int> mainChain;
     std::vector<int> pend;
 
-    for (size_t i = 0; i + 1 < v.size(); i += 2)
+    for (size_t i = 0; i + 1 < container.size(); i += 2)
     {
-        int a = v[i];
-        int b = v[i + 1];
+        int a = container[i];
+        int b = container[i + 1];
         if (a > b)
             std::swap(a, b);
         pend.push_back(a);
         mainChain.push_back(b);
     }
-    if ((v.size() % 2) != 0)
-        mainChain.push_back(v.back());
-
+    if ((container.size() % 2) != 0)
+        mainChain.push_back(container.back());
+    std::cout << "\n\nMAIN CHAIN BEFORE SORT: ";
+    PrintContainer(mainChain);
+    std::cout << "PEND BEFORE SORT: ";
+    PrintContainer(pend);
     ford_johnson_sort(mainChain);
 
     std::vector<int> result = mainChain;
     if (!pend.empty())
     {
-        // Insert in Jacobsthal-inspired order (correctness doesn't depend on the order).
+        // Insert in Jacobsthal-inspired order. Ensure every index [0..pend.size()-1]
+        // appears exactly once (no duplicates, no missing indices).
         std::vector<size_t> order;
-        order.push_back(0);
+        std::vector<bool> used(pend.size(), false);
+
+        add_once(order, used, 0);
+        if (pend.size() >= 2)
+            add_once(order, used, 1);
 
         size_t prevJ = 1; // J(2)
         for (size_t k = 3;; ++k)
@@ -86,11 +93,15 @@ static void ford_johnson_sort(std::vector<int> &v)
             if (j >= pend.size())
                 break;
             for (size_t idx = j; idx > prevJ; --idx)
-                order.push_back(idx);
+                add_once(order, used, idx);
             prevJ = j;
         }
-        for (size_t idx = pend.size() - 1; idx + 1 > prevJ; --idx)
-            order.push_back(idx);
+        for (size_t idx = pend.size() - 1; idx > prevJ; --idx)
+            add_once(order, used, idx);
+
+        // Safety net: if anything was missed, add remaining indices in order.
+        for (size_t idx = 0; idx < pend.size(); ++idx)
+            add_once(order, used, idx);
 
         for (size_t oi = 0; oi < order.size(); ++oi)
         {
@@ -100,21 +111,32 @@ static void ford_johnson_sort(std::vector<int> &v)
         }
     }
 
-    v.swap(result);
+    container.swap(result);
 }
 
 /*
  * MAIN : B1, A1, A2
  * PEND : B2, B3 ...
  */
-int main()
+int main(int ac, char **av)
 {
     std::vector<int> container;
-    int arr[] = {11, 2, 17, 0, 16, 8, 6, 15, 10, 3, 21, 1, 18, 9, 14, 19, 12, 5, 4, 20, 13, 7};
 
-    for (int i = 0; i < 22; i++)
-        container.push_back(arr[i]);
-
+    for (int i = 1; i < ac; i++)
+    {
+        try
+        {
+            int num = std::atoi(av[i]);
+            if (num < 0)
+                throw std::invalid_argument("Negative number");
+            container.push_back(num);
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << RED << "Error: Invalid input '" << av[i] << "'. Please provide non-negative integers only." << RESET << std::endl;
+            return 1;
+        }
+    }
     std::cout << "          SIZE NUMBERS IS : " << container.size() << std::endl;
     std::cout << "-------- BEFORE FORD-JOHNSON ALGORITHM --------" << std::endl;
     PrintContainer(container);
