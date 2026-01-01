@@ -6,11 +6,11 @@
 
 size_t jacobsthal(size_t n)
 {
-    // if (n == 0) return 0;
-    // if (n == 1) return 1;
-    // return (jacobsthal(n-1) + 2*jacobsthal(n-2));
-
-    return ((pow(2, n) - (pow(-1, n))) / 3);
+    if (n == 0)
+        return 0;
+    if (n == 1)
+        return 1;
+    return jacobsthal(n - 1) + 2 * jacobsthal(n - 2);
 }
 
 template <typename T> void PrintContainer(const T& container)
@@ -25,31 +25,14 @@ template <typename T> void PrintContainer(const T& container)
     std::cout << "]" << std::endl;
 }
 
-static size_t jacobsthal_int(size_t n)
+void insert_binary_search(std::vector<int> &mainChain, const std::vector<int> &pend, size_t idx)
 {
-    if (n == 0) return 0;
-    if (n == 1) return 1;
-    size_t a = 0;
-    size_t b = 1;
-    for (size_t i = 2; i <= n; ++i)
-    {
-        size_t c = b + 2 * a;
-        a = b;
-        b = c;
-    }
-    return b;
+    const int value = pend[idx];
+    std::vector<int>::iterator pos = std::lower_bound(mainChain.begin(), mainChain.end(), value);
+    mainChain.insert(pos, value);
 }
 
-static void add_once(std::vector<size_t> &order, std::vector<bool> &used, size_t idx)
-{
-    if (idx < used.size() && !used[idx])
-    {
-        used[idx] = true;
-        order.push_back(idx);
-    }
-}
-
-static void ford_johnson_sort(std::vector<int> &container)
+void ford_johnson_sort_vec(std::vector<int> &container)
 {
     if (container.size() < 2)
         return;
@@ -68,50 +51,25 @@ static void ford_johnson_sort(std::vector<int> &container)
     }
     if ((container.size() % 2) != 0)
         mainChain.push_back(container.back());
-    std::cout << "\n\nMAIN CHAIN BEFORE SORT: ";
-    PrintContainer(mainChain);
-    std::cout << "PEND BEFORE SORT: ";
-    PrintContainer(pend);
-    ford_johnson_sort(mainChain);
 
-    std::vector<int> result = mainChain;
-    if (!pend.empty())
+    ford_johnson_sort_vec(mainChain);
+    
+    if (pend.size() >= 1)
+        insert_binary_search(mainChain, pend, 0);
+    if (pend.size() >= 2)
+        insert_binary_search(mainChain, pend, 1);
+    size_t prevJ = 1;
+    size_t k = 2;
+    while (++k)
     {
-        // Insert in Jacobsthal-inspired order. Ensure every index [0..pend.size()-1]
-        // appears exactly once (no duplicates, no missing indices).
-        std::vector<size_t> order;
-        std::vector<bool> used(pend.size(), false);
-
-        add_once(order, used, 0);
-        if (pend.size() >= 2)
-            add_once(order, used, 1);
-
-        size_t prevJ = 1; // J(2)
-        for (size_t k = 3;; ++k)
-        {
-            size_t j = jacobsthal_int(k);
-            if (j >= pend.size())
-                break;
-            for (size_t idx = j; idx > prevJ; --idx)
-                add_once(order, used, idx);
-            prevJ = j;
-        }
-        for (size_t idx = pend.size() - 1; idx > prevJ; --idx)
-            add_once(order, used, idx);
-
-        // Safety net: if anything was missed, add remaining indices in order.
-        for (size_t idx = 0; idx < pend.size(); ++idx)
-            add_once(order, used, idx);
-
-        for (size_t oi = 0; oi < order.size(); ++oi)
-        {
-            const int value = pend[order[oi]];
-            std::vector<int>::iterator pos = std::lower_bound(result.begin(), result.end(), value);
-            result.insert(pos, value);
-        }
+        size_t last = std::min(pend.size() - 1, jacobsthal(k));
+        if (last <= prevJ)
+            break;
+        for (size_t idx = last; idx > prevJ; --idx)
+            insert_binary_search(mainChain, pend, idx);
+        prevJ = last;
     }
-
-    container.swap(result);
+    container = mainChain;
 }
 
 /*
@@ -138,10 +96,10 @@ int main(int ac, char **av)
         }
     }
     std::cout << "          SIZE NUMBERS IS : " << container.size() << std::endl;
-    std::cout << "-------- BEFORE FORD-JOHNSON ALGORITHM --------" << std::endl;
     PrintContainer(container);
-    ford_johnson_sort(container);
-    std::cout << "--------- AFTER FORD-JOHNSON ALGORITHM ---------" << std::endl;
+    ford_johnson_sort_vec(container);
+    std::cout << GREEN;
     PrintContainer(container);
+    std::cout << RESET;
     return 0;
 }
