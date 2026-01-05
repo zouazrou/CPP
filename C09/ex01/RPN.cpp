@@ -23,20 +23,22 @@ int    RPN::eval(std::string& exp)
     std::stack<int> Stack;
     size_t sz = exp.length();
     int     f_operand, s_operand, resutl;
-    char    c;
 
     for (size_t i = 0; i < sz; i++)
     {
-        c = exp[i];
-        if (isspace(c))
+        if (isspace(exp[i]))
             continue;
-        else if (isdigit(c))
-            Stack.push(static_cast<int>(c-'0'));
+        else if (isdigit(exp[i]))
+        {
+            Stack.push(static_cast<int>(exp[i]-'0'));
+            if (isdigit(exp[i+1]))
+                throw (std::runtime_error("Error"));
+        }
         else
         {
             ft_pop(s_operand, Stack);
             ft_pop(f_operand, Stack);
-            resutl = do_operation(f_operand, s_operand, c);
+            resutl = do_operation(f_operand, s_operand, exp[i]);
             Stack.push(resutl);
         }
     }
