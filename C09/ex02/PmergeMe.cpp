@@ -133,7 +133,6 @@ void PmergeMe::fordJohnson_algorithm(char **list, size_t size)
     std::vector<uint>   vc;
     std::clock_t        start, end;
     double              duration;
-    long                seconds, useconds;
 
     ParseInput(list, size, dq, vc);
     std::cout << RED << "==Before Soring==" << RESET << std::endl;
